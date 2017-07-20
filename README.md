@@ -1,31 +1,34 @@
-# GowMQ
-The GowMQ is a simple client-server protocol over MQTT for Python
+# CowMQ
+The CowMQ is a simple client-server protocol over MQTT for Python
 
 
 ## Other platforms
-* [GowMQ-Nodejs](https://github.com/duncanHsu/GowMQ-Nodejs)
-* [GowMQ-iOS](https://github.com/duncanHsu/GowMQ-iOS)
-* [GowMQ-Android](https://github.com/duncanHsu/GowMQ-Android)
+* [CowMQ-Nodejs](https://github.com/duncanHsu/CowMQ-Nodejs)
+* [CowMQ-iOS](https://github.com/duncanHsu/CowMQ-iOS)
+* [CowMQ-Android](https://github.com/duncanHsu/CowMQ-Android)
 
 ## How to install
-> pip install GowMQ
+> pip install CowMQ
 
 ## How to use
 ### Config
 ```
-app.config['gow_mq_ip'] = 'mqtt_borker_ip'
-app.config['gow_mq_port'] = 'mqtt_broker_port
-app.config['gow_mq_username'] = 'mqtt_username' # option
-app.config['gow_mq_password'] = 'mqtt_password' # option
+app.config['cow_mq_ip'] = 'mqtt_borker_ip'
+app.config['cow_mq_port'] = 'mqtt_broker_port
+app.config['cow_mq_username'] = 'mqtt_username' # option
+app.config['cow_mq_password'] = 'mqtt_password' # option
+app.config['cow_mq_tls_ca_certs'] = None # option
+app.config['cow_mq_tls_certfile'] = None # option
+app.config['cow_mq_tls_keyfile'] = None # option
 ```
 
 ### Server
 ```
-from gow_mq.server import Server as GowMQServer
+from cow_mq.server import Server as CowMQServer
 
-gow_server = GowMQServer(app, 'server_domain')
+cow_server = CowMQServer(app, 'server_domain')
 
-@gow_server.route('/version')
+@cow_server.route('/version')
 def version(payload):
     data = json.dumps({'version': '0.0.1'})
     return data.encode('utf-8')
@@ -35,14 +38,14 @@ def version(payload):
 ```
 from views.api_account import api_account_bp
 
-gow_server.register_blueprint(api_account_bp, url_prefix='/account')
+cow_server.register_blueprint(api_account_bp, url_prefix='/account')
 ```
 
 api_account.py
 ```
-from gow_mq.blueprint import Blueprint as GowMQBlueprint
+from cow_mq.blueprint import Blueprint as CowMQBlueprint
 
-api_account_bp = GowMQBlueprint('api_account', __name__)
+api_account_bp = CowMQBlueprint('api_account', __name__)
 
 @api_account_bp.route("/sign_in")
 def sign_in(payload):
@@ -52,32 +55,32 @@ def sign_in(payload):
 
 ### Client
 ```
-from gow_mq.client import Client as GowMQClient
+from cow_mq.client import Client as CowMQClient
 
-gow_client = GowMQClient(app)
+cow_client = CowMQClient(app)
 
 def version_callback(domain, rule, rsp_data):
     print('version async rsp: {}'.format(rsp_data))
 
 data = json.dumps({'type': 1})
-gow_client.async_send('server_domain', '/version', data.encode('utf-8'), version_callback)
+cow_client.async_send('server_domain', '/version', data.encode('utf-8'), version_callback)
 
 ```
 
 **Listener Server Status**
 ```
-def on_gow_mq_server_connect(domain):
-    print('on_gow_mq_server_connect: {}'.format(domain))
+def on_cow_mq_server_connect(domain):
+    print('on_cow_mq_server_connect: {}'.format(domain))
 
-def on_gow_mq_server_disconnect(domain):
-    print('on_gow_mq_server_disconnect: {}'.format(domain))
+def on_cow_mq_server_disconnect(domain):
+    print('on_cow_mq_server_disconnect: {}'.format(domain))
     
-gow_client.register_server_connected('server_domain')
-gow_client.on_server_connect = on_gow_mq_server_connect
-gow_client.on_server_disconnect = on_gow_mq_server_disconnect
+cow_client.register_server_connected('server_domain')
+cow_client.on_server_connect = on_cow_mq_server_connect
+cow_client.on_server_disconnect = on_cow_mq_server_disconnect
 ```
 
 
 ## License
 
-GowMQ is available under the MIT license.
+CowMQ is available under the MIT license.
