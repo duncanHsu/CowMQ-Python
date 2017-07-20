@@ -9,7 +9,7 @@ import json
 import threading
 
 
-class SEND_TYPE(Enum):
+class SendType(Enum):
     NONE = 0
     SYNC = 1
     ASYNC = 2
@@ -36,13 +36,13 @@ class Client:
         domain = None
         rule = None
         completed = False
-        send_type = SEND_TYPE.NONE
+        send_type = SendType.NONE
         rsp_data = None
         rsp_callback = None
         timeout_timer = None
 
         def __init__(self, domain, rule, completed=False,
-                     send_type=SEND_TYPE.NONE,
+                     send_type=SendType.NONE,
                      rsp_data=ResponseData(), rsp_callback=None,
                      timeout_timer=None):
             self.domain = domain
@@ -183,7 +183,7 @@ class Client:
         #                              data_type, rsp_topic,
         #                              send_data.rsp_data))
 
-        if send_data.send_type == SEND_TYPE.ASYNC:
+        if send_data.send_type == SendType.ASYNC:
             send_data.timeout_timer.cancel()
             del self.topic_domain_rule_dic[topic]
             self.logger.debug(
@@ -241,7 +241,7 @@ class Client:
         data_bytes = Util.encode(DataType.REQ, payload, rsp_topic)
 
         self.topic_domain_rule_dic[rsp_topic] = Client.SendData(
-            domain, rule, send_type=SEND_TYPE.SYNC)
+            domain, rule, send_type=SendType.SYNC)
 
         self.mqtt_client.subscribe(rsp_topic, qos=1)
         self.mqtt_client.publish(topic, payload=data_bytes, qos=1)
@@ -281,7 +281,7 @@ class Client:
         data_bytes = Util.encode(DataType.REQ, payload, rsp_topic)
 
         self.topic_domain_rule_dic[rsp_topic] = Client.SendData(
-            domain, rule, send_type=SEND_TYPE.ASYNC, rsp_callback=callback)
+            domain, rule, send_type=SendType.ASYNC, rsp_callback=callback)
         self.mqtt_client.subscribe(rsp_topic, qos=1)
         self.mqtt_client.publish(topic, payload=data_bytes, qos=1)
         self.logger.debug('async_send topic:{}, payload:{}'.format(
