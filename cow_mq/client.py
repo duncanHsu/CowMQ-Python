@@ -73,7 +73,7 @@ class Client:
     topic_domain_rule_dic = {}
     registered_server_data = []
 
-    def __init__(self, app, logging_level=logging.WARNING):
+    def __init__(self, config, logging_level=logging.WARNING):
         self.logger = logging.getLogger('CowMQ Client')
         self.logger.setLevel(logging_level)
         ch = logging.StreamHandler()
@@ -83,16 +83,16 @@ class Client:
         ch.setFormatter(formatter)
         self.logger.addHandler(ch)
 
-        mqtt_ip = Util.get_cow_mq_ip_from_config(app.config)
-        mqtt_port = Util.get_cow_mq_port_from_config(app.config)
-        mqtt_username = Util.get_cow_mq_username_from_config(app.config)
-        mqtt_password = Util.get_cow_mq_password_from_config(app.config)
+        mqtt_ip = Util.get_cow_mq_ip_from_config(config)
+        mqtt_port = Util.get_cow_mq_port_from_config(config)
+        mqtt_username = Util.get_cow_mq_username_from_config(config)
+        mqtt_password = Util.get_cow_mq_password_from_config(config)
         mqtt_tls_ca_certs = Util.get_cow_mq_tls_ca_certs_from_config(
-            app.config)
+            config)
         mqtt_tls_certfile = Util.get_cow_mq_tls_certfile_from_config(
-            app.config)
+            config)
         mqtt_tls_keyfile = Util.get_cow_mq_tls_keyfile_from_config(
-            app.config)
+            config)
 
         self.mqtt_ip = mqtt_ip
         self.mqtt_port = mqtt_port

@@ -1,32 +1,38 @@
 # CowMQ
+
+[![CocoaPods](https://img.shields.io/cocoapods/l/AFNetworking.svg)]()
+[![PyPI](https://img.shields.io/pypi/v/nine.svg)]()
+[![PyPI](https://img.shields.io/badge/python-3.4%2C%203.5%2C%203.6-blue.svg)]()
+
 The CowMQ is a simple client-server protocol over MQTT for Python
 
 
-## Other platforms
+## Other Platforms
 * [CowMQ-Nodejs](https://github.com/duncanHsu/CowMQ-Nodejs)
 * [CowMQ-iOS](https://github.com/duncanHsu/CowMQ-iOS)
 * [CowMQ-Android](https://github.com/duncanHsu/CowMQ-Android)
 
-## How to install
+## Installation
 > pip install CowMQ
 
-## How to use
+## Quick Start
 ### Config
 ```
-app.config['cow_mq_ip'] = 'mqtt_borker_ip'
-app.config['cow_mq_port'] = 'mqtt_broker_port
-app.config['cow_mq_username'] = 'mqtt_username' # option
-app.config['cow_mq_password'] = 'mqtt_password' # option
-app.config['cow_mq_tls_ca_certs'] = None # option
-app.config['cow_mq_tls_certfile'] = None # option
-app.config['cow_mq_tls_keyfile'] = None # option
+config = {}
+config['cow_mq_ip'] = 'mqtt_borker_ip'
+config['cow_mq_port'] = 'mqtt_broker_port
+config['cow_mq_username'] = 'mqtt_username' # option
+config['cow_mq_password'] = 'mqtt_password' # option
+config['cow_mq_tls_ca_certs'] = None # option
+config['cow_mq_tls_certfile'] = None # option
+config['cow_mq_tls_keyfile'] = None # option
 ```
 
 ### Server
 ```
 from cow_mq.server import Server as CowMQServer
 
-cow_server = CowMQServer(app, 'server_domain')
+cow_server = CowMQServer(config, 'server_domain')
 
 @cow_server.route('/version')
 def version(payload):
@@ -34,7 +40,7 @@ def version(payload):
     return data.encode('utf-8')
 ```
 
-**Blueprint**
+### Blueprint
 ```
 from views.api_account import api_account_bp
 
@@ -42,6 +48,7 @@ cow_server.register_blueprint(api_account_bp, url_prefix='/account')
 ```
 
 api_account.py
+
 ```
 from cow_mq.blueprint import Blueprint as CowMQBlueprint
 
@@ -57,7 +64,7 @@ def sign_in(payload):
 ```
 from cow_mq.client import Client as CowMQClient
 
-cow_client = CowMQClient(app)
+cow_client = CowMQClient(config)
 
 def version_callback(domain, rule, rsp_data):
     print('version async rsp: {}'.format(rsp_data))
@@ -67,7 +74,7 @@ cow_client.async_send('server_domain', '/version', data.encode('utf-8'), version
 
 ```
 
-**Listener Server Status**
+### Listener Server Status
 ```
 def on_cow_mq_server_connect(domain):
     print('on_cow_mq_server_connect: {}'.format(domain))
@@ -80,6 +87,9 @@ cow_client.on_server_connect = on_cow_mq_server_connect
 cow_client.on_server_disconnect = on_cow_mq_server_disconnect
 ```
 
+## Author
+
+- Duncan Hsu <protosss2@gmail.com>
 
 ## License
 

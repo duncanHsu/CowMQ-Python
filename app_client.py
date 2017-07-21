@@ -9,16 +9,18 @@ SERVER_DOMAIN = 'www.hcy.com'
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'cow_mq_2017'
-app.config['cow_mq_ip'] = '192.168.159.114'
-#app.config['cow_mq_ip'] = 'your_mqtt_ip'
-app.config['cow_mq_port'] = 1883
-app.config['cow_mq_username'] = None
-app.config['cow_mq_password'] = None
-app.config['cow_mq_tls_ca_certs'] = None
-app.config['cow_mq_tls_certfile'] = None
-app.config['cow_mq_tls_keyfile'] = None
 
-cow_client = CowMQClient(app, logging_level=logging.DEBUG)
+config = {}
+config['cow_mq_ip'] = '192.168.159.114'
+#config['cow_mq_ip'] = 'your_mqtt_ip'
+config['cow_mq_port'] = 1883
+config['cow_mq_username'] = None
+config['cow_mq_password'] = None
+config['cow_mq_tls_ca_certs'] = None
+config['cow_mq_tls_certfile'] = None
+config['cow_mq_tls_keyfile'] = None
+
+cow_client = CowMQClient(config, logging_level=logging.DEBUG)
 cow_client.register_server_connected(SERVER_DOMAIN)
 
 
