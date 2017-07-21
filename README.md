@@ -93,4 +93,4 @@ cow_client.on_server_disconnect = on_cow_mq_server_disconnect
 
 ## License
 
-CowMQ is available under the MIT license.
+CowMQ is available under the Apache License 2.0.
